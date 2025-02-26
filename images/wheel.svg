@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <!-- 輪盤背景 -->
+  <circle cx="250" cy="250" r="240" fill="#f5f5f5" stroke="#333" stroke-width="2"/>
+  
+  <!-- 獎品區塊 - 7個獎品 -->
+  <!-- 獎品1 -->
+  <path d="M250,250 L490,250 A240,240 0 0,0 367.5,54.5 Z" fill="#e74c3c"/>
+  <text x="380" y="170" fill="white" font-size="16" font-weight="bold" text-anchor="middle" transform="rotate(25, 380, 170)">綠東陵 | 原礦水晶</text>
+  
+  <!-- 獎品2 -->
+  <path d="M250,250 L367.5,54.5 A240,240 0 0,0 132.5,54.5 Z" fill="#3498db"/>
+  <text x="250" y="100" fill="white" font-size="16" font-weight="bold" text-anchor="middle">算命金100元</text>
+  
+  <!-- 獎品3 -->
+  <path d="M250,250 L132.5,54.5 A240,240 0 0,0 10,250 Z" fill="#2ecc71"/>
+  <text x="120" y="170" fill="white" font-size="16" font-weight="bold" text-anchor="middle" transform="rotate(-25, 120, 170)">請神供奉30天</text>
+  
+  <!-- 獎品4 -->
+  <path d="M250,250 L10,250 A240,240 0 0,0 132.5,445.5 Z" fill="#f1c40f"/>
+  <text x="120" y="330" fill="white" font-size="16" font-weight="bold" text-anchor="middle" transform="rotate(25, 120, 330)">即享卷</text>
+  
+  <!-- 獎品5 -->
+  <path d="M250,250 L132.5,445.5 A240,240 0 0,0 367.5,445.5 Z" fill="#95a5a6"/>
+  <text x="250" y="400" fill="white" font-size="16" font-weight="bold" text-anchor="middle">謝謝參與</text>
+  
+  <!-- 獎品6 -->
+  <path d="M250,250 L367.5,445.5 A240,240 0 0,0 490,250 Z" fill="#9b59b6"/>
+  <text x="380" y="330" fill="white" font-size="16" font-weight="bold" text-anchor="middle" transform="rotate(-25, 380, 330)">算命金50元</text>
+  
+  <!-- 中心圓 -->
+  <circle cx="250" cy="250" r="50" fill="white" stroke="#333" stroke-width="2"/>
+  <text x="250" y="255" fill="#333" font-size="18" font-weight="bold" text-anchor="middle">開始</text>
+</svg> 

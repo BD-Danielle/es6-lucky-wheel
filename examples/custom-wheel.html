@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自定義幸運輪盤示例</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Microsoft JhengHei', Arial, sans-serif;
+      background-color: #f0f8ff;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      color: #3498db;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 自定義輪盤容器樣式 */
+    #custom-wheel-container {
+      position: relative;
+      width: 350px;
+      height: 350px;
+      margin: 0 auto 30px;
+      border: 5px solid #3498db;
+      border-radius: 50%;
+      padding: 5px;
+    }
+
+    /* 自定義輪盤樣式 */
+    .custom-wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      transition: transform 4s ease-out;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+
+    /* 自定義指針樣式 */
+    .custom-pointer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70px;
+      height: 70px;
+      z-index: 10;
+      cursor: pointer;
+      filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+    }
+
+    /* 自定義指針動畫 */
+    @keyframes customJump {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.2);
+      }
+    }
+
+    .custom-pointer:not(.paused) {
+      animation: customJump 1.2s infinite;
+    }
+
+    .paused {
+      animation-play-state: paused;
+    }
+
+    /* 按鈕樣式 */
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    /* 自定義彈窗樣式 */
+    .custom-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .popup-content {
+      background-color: white;
+      padding: 40px;
+      border-radius: 15px;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      cursor: pointer;
+      color: #999;
+    }
+
+    .prize-title {
+      margin-bottom: 25px;
+      color: #3498db;
+      font-size: 28px;
+    }
+
+    .prize-image img {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .prize-description {
+      margin-bottom: 25px;
+      font-size: 18px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>自定義幸運輪盤示例</h1>
+
+    <!-- 自定義輪盤容器 -->
+    <div id="custom-wheel-container">
+      <!-- 輪盤圖片 -->
+      <img id="customWheel" src="../images/wheel.svg" alt="抽獎輪盤" class="custom-wheel">
+      <!-- 指針圖片 -->
+      <img id="customPointer" src="../images/pointer.svg" alt="指針" class="custom-pointer paused">
+    </div>
+
+    <div>
+      <button id="spin-button">開始抽獎</button>
+      <button id="reset-button">重置輪盤</button>
+    </div>
+
+    <!-- 自定義結果彈窗 -->
+    <div id="result-popup" class="custom-popup hidden">
+      <div class="popup-content">
+        <div class="close-btn">&times;</div>
+        <h2 id="prize-title" class="prize-title"></h2>
+        <div class="prize-image">
+          <img id="prize-img" src="" alt="獎品圖片">
+        </div>
+        <div id="prize-description" class="prize-description"></div>
+        <button class="confirm-btn">確定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引入JavaScript文件 -->
+  <script type="module">
+    // 導入LuckyWheel類和默認配置
+    import LuckyWheel, { DEFAULT_WHEEL_CONFIG } from '../js/lucky-wheel.js';
+    
+    document.addEventListener('DOMContentLoaded', function () {
+      // 創建自定義配置，覆蓋默認配置中的選擇器和其他設置
+      const customConfig = {
+        // 自定義選擇器
+        container: '#custom-wheel-container',
+        wheelSelector: '#customWheel',
+        pointerSelector: '#customPointer',
+        resultContainer: '#result-popup',
+        prizeNameSelector: '#prize-title',
+        prizeImageSelector: '#prize-img',
+        prizeTextSelector: '#prize-description',
+        
+        // 自定義類名
+        hiddenClass: 'hidden',
+        disabledClass: 'disabled',
+        pointerAnimationClass: 'paused',
+        
+        // 自定義動畫參數
+        duration: 6000,
+        easing: 'cubic-bezier(0.1, 0.7, 0.1, 1)',
+        minSpins: 5,
+        autoResetDelay: 8000,
+        
+        // 自定義獎品（可以使用不同的獎品）
+        prizes: [
+          { name: '特等獎：iPhone 15', image: '../images/pop_img/01_pop.jpg', text: '恭喜您獲得了特等獎！' },
+          { name: '二等獎：AirPods', image: '../images/pop_img/03_pop.jpg', text: '恭喜您獲得了二等獎！' },
+          { name: '三等獎：$100禮品卡', image: '../images/pop_img/04_pop.jpg', text: '恭喜您獲得了三等獎！' },
+          { name: '四等獎：$50禮品卡', image: '../images/pop_award/04.jpg', text: '恭喜您獲得了四等獎！' },
+          { name: '謝謝參與', image: '../images/pop_img/00_pop.jpg', text: '感謝您的參與，下次再接再厲！', hideText: false },
+          { name: '安慰獎：$10禮品卡', image: '../images/pop_img/05_pop.jpg', text: '恭喜您獲得了安慰獎！' },
+          { name: '神秘獎：驚喜禮包', image: '../images/pop_img/02_pop.jpg', text: '恭喜您獲得了神秘獎！' },
+        ],
+        
+        // 自定義回調函數
+        onStart: () => {
+          console.log('輪盤開始旋轉');
+          document.getElementById('spin-button').disabled = true;
+        },
+        onEnd: (prize, index) => {
+          console.log(`恭喜獲得：${prize.name}，獎品索引：${index}`);
+          document.getElementById('spin-button').disabled = false;
+        },
+        onReset: () => {
+          console.log('輪盤已重置');
+        }
+      };
+      
+      // 創建輪盤實例
+      const wheel = new LuckyWheel(customConfig);
+      
+      // 綁定按鈕事件
+      document.getElementById('spin-button').addEventListener('click', () => {
+        wheel.spin();
+      });
+      
+      document.getElementById('reset-button').addEventListener('click', () => {
+        wheel.reset();
+      });
+      
+      // 綁定彈窗關閉事件
+      document.querySelector('.close-btn').addEventListener('click', () => {
+        document.getElementById('result-popup').classList.add('hidden');
+      });
+      
+      document.querySelector('.confirm-btn').addEventListener('click', () => {
+        document.getElementById('result-popup').classList.add('hidden');
+      });
+      
+      // 顯示配置信息（可選，僅用於演示）
+      console.log('默認配置:', DEFAULT_WHEEL_CONFIG);
+      console.log('自定義配置:', customConfig);
+    });
+  </script>
+</body>
+
+</html> 

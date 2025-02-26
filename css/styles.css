@@ -1,0 +1,183 @@
+/* 全局樣式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft JhengHei', Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 30px;
+    color: #e74c3c;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* 輪盤容器樣式 */
+#lottery-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 0 auto 30px;
+}
+
+/* 輪盤樣式 */
+.wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    transition: transform 4s ease-out;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* 指針樣式 */
+.pointer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    z-index: 10;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.pointer:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* 指針動畫 */
+@keyframes boxJump {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+}
+
+.pointer:not(.boxJumpAnimatePaused) {
+    animation: boxJump 1s infinite;
+}
+
+.boxJumpAnimatePaused {
+    animation-play-state: paused;
+}
+
+/* 說明區域 */
+.instructions {
+    margin-bottom: 20px;
+}
+
+.instructions p {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #c0392b;
+}
+
+/* 彈窗樣式 */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.popup-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+#prizeName {
+    margin-bottom: 20px;
+    color: #e74c3c;
+    font-size: 24px;
+}
+
+.prize-image {
+    margin-bottom: 20px;
+}
+
+.prize-image img {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 5px;
+}
+
+.prize-text {
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.prize-text span {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.award_result {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.confirm-btn {
+    margin-top: 10px;
+}
+
+/* 工具類 */
+.hidden {
+    display: none !important;
+} 
