@@ -51,7 +51,7 @@
 
   <!-- 引入JavaScript文件 -->
   <script type="module">
-    import LuckyWheel, { DEFAULT_WHEEL_CONFIG } from './js/es6.lucky.wheel.1.0.0.js';
+    import { LuckyWheel } from './js/es6.lucky.wheel.2.1.0.js';
 
     // 頁面加載完成後的額外初始化
     document.addEventListener('DOMContentLoaded', function () {
@@ -68,15 +68,34 @@
       document.getElementById('manual-spin').addEventListener('click', function () {
         // 創建輪盤實例，可以自定義配置
         const wheel = new LuckyWheel({
-          // 這裡可以覆蓋默認配置
+          prizes: [
+            { name: 'Green Agate | Raw Crystal', image: 'images/pop_img/01_pop.jpg', text: '' },
+            { name: 'Fortune Gold $100', image: 'images/pop_img/03_pop.jpg', text: 'Expires: <span>2025-03-20</span>' },
+            { name: '30-Day Divine Offering', image: 'images/pop_img/04_pop.jpg', text: 'Expires: <span>2025-03-20</span>' },
+            { name: 'Instant Voucher', image: 'images/pop_award/04.jpg', text: '' },
+            { name: 'Thanks for Playing', image: 'images/pop_img/00_pop.jpg', text: '', hideText: true },
+            { name: 'Fortune Gold $50', image: 'images/pop_img/05_pop.jpg', text: 'Expires: <span>2025-03-20</span>' },
+            { name: 'Zi Wei Career Luck', image: 'images/pop_img/02_pop.jpg', text: 'Expires: <span>2025-03-20</span>' },
+          ],
+          specialPrizeIndex: 2, // 可選的特殊獎項索引
           duration: 5000,
-          autoResetDelay: 3000
+          minSpins: 4,
+          easing: 'ease-in-out',
+          autoResetDelay: 4000,
+          pointerSelector: '#arrowImg',
+          wheelSelector: '#tunableImg',
+          resultContainer: '#common_pop',
+          prizeNameSelector: '#prizeName',
+          prizeImageSelector: '#popup_img',
+          prizeTextSelector: '#prizeTxt',
+          onStart: () => console.log('🎯 Spin started!'),
+          onEnd: (prize, index) => console.log(`🎉 You won: ${prize.name} (Index: ${index})`),
+          onReset: () => console.log('🔁 Wheel reset.'),
         });
-        wheel.spin();
-      });
 
-      // 顯示默認配置示例（可選，僅用於演示）
-      console.log('默認配置:', DEFAULT_WHEEL_CONFIG);
+        // 若需手動銷毀（例如在 SPA 中切換頁面）
+        window.addEventListener('pagehide', () => wheel.destroy());
+      });
     });
   </script>
 </body>
