@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>幸運輪盤抽獎</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>幸運輪盤抽獎</h1>
+
+    <!-- 輪盤容器 -->
+    <div id="lottery-container">
+      <!-- 輪盤圖片 -->
+      <img id="tunableImg" src="images/wheel.svg" alt="抽獎輪盤" class="wheel">
+      <!-- 指針圖片 -->
+      <img id="arrowImg" src="images/pointer.svg" alt="指針" class="pointer boxJumpAnimatePaused">
+    </div>
+
+    <!-- 抽獎說明 -->
+    <div class="instructions">
+      <p>點擊指針開始抽獎</p>
+      <button id="manual-spin">手動抽獎</button>
+    </div>
+
+    <!-- 結果彈窗 -->
+    <div id="common_pop" class="popup hidden">
+      <div class="popup-content">
+        <div class="close-btn">&times;</div>
+        <h2 id="prizeName"></h2>
+        <div class="prize-image">
+          <img id="popup_img" src="" alt="獎品圖片">
+        </div>
+        <div id="prizeTxt" class="prize-text"></div>
+
+        <!-- 獎品結果顯示區域 -->
+        <div class="award_result hidden">
+          <p>恭喜您獲得了獎品！</p>
+        </div>
+        <div class="award_result hidden">
+          <p>恭喜您獲得了特殊獎品！</p>
+        </div>
+
+        <button class="confirm-btn">確定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引入JavaScript文件 -->
+  <script type="module">
+    import { initLuckyWheelLite } from './js/lucky.wheel.lite.js';
+
+    // 頁面加載完成後的額外初始化
+    document.addEventListener('DOMContentLoaded', function () {
+      // 關閉彈窗
+      document.querySelector('.close-btn').addEventListener('click', function () {
+        document.getElementById('common_pop').classList.add('hidden');
+      });
+
+      document.querySelector('.confirm-btn').addEventListener('click', function () {
+        document.getElementById('common_pop').classList.add('hidden');
+      });
+
+      // 手動抽獎按鈕
+      document.getElementById('manual-spin').addEventListener('click', function () {
+        // 創建輪盤實例，可以自定義配置
+        initLuckyWheelLite({
+          prizes: [
+            { name: 'Green Agate | Raw Crystal', image: 'images/pop_img/01_pop.jpg', text: '' },
+            { name: 'Fortune Gold $100', image: 'images/pop_img/03_pop.jpg', text: 'Expires: <span>2025-03-20</span>' },
+            { name: '30-Day Divine Offering', image: 'images/pop_img/04_pop.jpg', text: 'Expires: <span>2025-03-20</span>' },
+            { name: 'Instant Voucher', image: 'images/pop_award/04.jpg', text: '' },
+            { name: 'Thanks for Playing', image: 'images/pop_img/00_pop.jpg', text: '', hideText: true },
+            { name: 'Fortune Gold $50', image: 'images/pop_img/05_pop.jpg', text: 'Expires: <span>2025-03-20</span>' },
+            { name: 'Zi Wei Career Luck', image: 'images/pop_img/02_pop.jpg', text: 'Expires: <span>2025-03-20</span>' },
+          ]
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
